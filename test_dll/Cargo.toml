@@ -1,0 +1,12 @@
+[package]
+name = "test_dll"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ctor = "0.1"
+pyo3 = {version = "0.25.0", features = ["auto-initialize"]}
+
