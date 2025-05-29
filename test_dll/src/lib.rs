@@ -1,7 +1,7 @@
 mod prelude;
 use prelude::*;
 
-#[ctor::ctor]
+#[ctor]
 fn init() {
     init_python_interpreter()
 }
@@ -52,11 +52,13 @@ pub extern "C" fn dll_yolo_predict(data_ptr: *const c_uchar, data_len: usize) ->
 
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn free_c_string(s: *mut c_char) {
-    if s.is_null() {
-        return;
+    unsafe {
+        if s.is_null() {
+            return;
+        }
+        // 從指標重建 CString 並 drop，讓 Rust 釋放記憶體
+        let _ = CString::from_raw(s);
     }
-    // 從指標重建 CString 並 drop，讓 Rust 釋放記憶體
-    let _ = CString::from_raw(s);
 }
 #[cfg(test)]
 mod tests {
@@ -66,7 +68,7 @@ mod tests {
     fn test_predict() {
         init_python_interpreter();
         let bytes = fs::read("yolov12/cat.jpg").unwrap();
-        let result = yolo_predict(bytes.clone());
+        let _result = yolo_predict(bytes.clone());
         let result = yolo_predict(bytes);
 
         println!("Prediction result: {}", result);
