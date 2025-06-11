@@ -1,2 +1,12 @@
-test_dll/target
+rust_dll/target
 *.pt
+**/__pycache__
+**/rust_dll.d 
+**/rust_dll.dll
+**/rust_dll.dll.exp
+**/rust_dll.dll.lib
+**/rust_dll.h
+**/rust_dll.pdb
+**/main.exe
+all_program/yolov12
+rust_dll/yolov12
